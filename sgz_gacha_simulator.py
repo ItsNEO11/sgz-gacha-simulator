@@ -79,13 +79,16 @@ def simulate(draws):
     return results, orange_history, orange_name_types
 
 # === 页面 UI ===
-st.title("🎯 三国志·战略版 抽卡模拟器")
-st.markdown("💡 抽卡成本计算为：每抽5次消耗 948 金珠，1 元 = 10 金珠，因此每抽约为 **18.96 元**")
-st.markdown("模拟真实出率、30抽保底、5连普通保护机制")
+st.title("🎲 三国志·战略版 抽卡计算器")
+st.markdown("🧮 抽卡成本计算：5 连消耗 948 金珠，1 元 = 10 金珠，每抽约为 **18.96 元**")
+st.markdown("🔆 每赛季抽免半，需要 17820 金珠，可抽 360 次；")
+st.markdown("🔆 每赛季双月卡，消费 144 元得 20340 金珠，可抽 107.27 次（21.45 次 5 连）；")
+st.markdown("🔆 每赛季帝王套，消费 1308 元得 26160 金珠，可抽 137.97 次（27.59 次 5 连）；")
+st.markdown("⚠️ 模拟真实抽卡率、30 抽保底、5+1 出核心")
 
 n_draws = st.number_input("请输入抽卡次数：", min_value=1, max_value=100000, value=300, step=1)
 
-if st.button("开始模拟"):
+if st.button("模拟抽卡"):
     results, orange_history, orange_name_types = simulate(n_draws)
     total_cost = n_draws * cost_per_draw
     orange_count = len(orange_history)
@@ -95,10 +98,10 @@ if st.button("开始模拟"):
     st.markdown(f"- 抽卡次数：{n_draws}")
     st.markdown(f"- 抽中五星橙卡：{orange_count} 张")
     st.markdown(f"- 其中：普通 {orange_history.count('普通')}，稀有 {orange_history.count('稀有')}，特别 {orange_history.count('特别')}")
-    st.markdown(f"- 🧮 每张橙卡平均成本：￥{avg_cost:,.2f}")
+    st.markdown(f"- 每张橙卡平均成本：￥{avg_cost:,.2f}")
     if orange_count > 0:
         avg_draws_per_orange = n_draws / orange_count
-        st.markdown(f"- 🎲 平均出橙概率：每抽 {avg_draws_per_orange:.1f} 次出一张橙卡")
+        st.markdown(f"- 平均出橙概率：每抽 {avg_draws_per_orange:.1f} 次出一张橙卡")
 
     if orange_name_types:
         st.markdown("### 🎉 恭喜你抽到：")
@@ -110,16 +113,16 @@ if st.button("开始模拟"):
             all_draw_count[name] += 1
 
         if counter_by_type["特别"]:
-            st.success("⭐ 特别橙卡为：" + "，".join([f"{n} × {c}" for n, c in counter_by_type["特别"].items()]))
+            st.success("💎 特别橙卡：" + "，".join([f"{n} × {c}" for n, c in counter_by_type["特别"].items()]))
         if counter_by_type["稀有"]:
-            st.info("✨ 稀有橙卡为：" + "，".join([f"{n} × {c}" for n, c in counter_by_type["稀有"].items()]))
+            st.info("⭐️ 稀有橙卡：" + "，".join([f"{n} × {c}" for n, c in counter_by_type["稀有"].items()]))
         if counter_by_type["普通"]:
-            st.warning("🎯 普通橙卡为：" + "，".join([f"{n} × {c}" for n, c in counter_by_type["普通"].items()]))
+            st.warning("✅ 普通橙卡：" + "，".join([f"{n} × {c}" for n, c in counter_by_type["普通"].items()]))
 
         # 🌟 满红展示
         full_red_list = [f"{name}（{count}）" for name, count in all_draw_count.items() if count >= 6]
         if full_red_list:
-            st.success("🌟 满红武将为：" + "，".join(sorted(full_red_list)))
+            st.success("🌟 满红武将：" + "，".join(sorted(full_red_list)))
 
         # 🕳️ 未抽到橙卡（抽卡数 >= 3000）
         if n_draws >= 3000:
@@ -127,9 +130,9 @@ if st.button("开始模拟"):
             full_pool = set(special_cards + rare_cards + normal_cards)
             unhit = full_pool - all_obtained
             if unhit:
-                st.error("🕳️ 还未抽到的橙卡为：" + "，".join(sorted(unhit)))
+                st.error("💡 还未抽到的橙卡：" + "，".join(sorted(unhit)))
             else:
-                st.success("🎯 恭喜！你已抽齐当前所有橙卡！")
+                st.success("🎉 恭喜！你已抽齐当前所有橙卡！")
 
         # 🕳️ 未满红橙卡（抽卡数 >= 10000）
         if n_draws >= 10000:
@@ -137,15 +140,15 @@ if st.button("开始模拟"):
             not_full_red = [f"{name}（{all_draw_count.get(name, 0)}）"
                             for name in sorted(full_pool) if all_draw_count.get(name, 0) < 6]
             if not_full_red:
-                st.error("🕳️ 还未满红的橙卡有：" + "，".join(not_full_red))
+                st.error("💡 还未满红的橙卡有：" + "，".join(not_full_red))
             else:
-                st.success("💎 太棒了！你已满红当前所有橙卡！")
+                st.success("🎉 太棒了！你已满红当前所有橙卡！")
     else:
         st.info("😢 本次未抽中任何五星橙卡。")
 
     # 饼图
     if orange_count > 0:
-        labels = ["Special 5★", "Rare 5★", "Normal 5★"]
+        labels = ["特别五星橙卡", "稀有五星橙卡", "普通五星橙卡"]
         values = [orange_history.count("特别"), orange_history.count("稀有"), orange_history.count("普通")]
         fig, ax = plt.subplots()
         ax.pie(values, labels=labels, autopct="%1.1f%%", startangle=90)
@@ -153,7 +156,7 @@ if st.button("开始模拟"):
         st.pyplot(fig)
 
 # === 卡池展示 ===
-st.markdown("## 🧾 当前卡池武将列表")
-st.success("⭐ 特别橙卡为：" + "，".join(special_cards))
-st.info("✨ 稀有橙卡为：" + "，".join(rare_cards))
-st.warning("🎯 普通橙卡为：" + "，".join(normal_cards))
+st.markdown("## 🛡 当前卡池武将列表")
+st.success("💎 特别橙卡：" + "，".join(special_cards))
+st.info("⭐ 稀有橙卡：" + "，".join(rare_cards))
+st.warning("✅ 普通橙卡：" + "，".join(normal_cards))
