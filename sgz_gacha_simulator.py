@@ -145,7 +145,7 @@ if st.button("开始模拟"):
 
     # 饼图
     if orange_count > 0:
-        labels = ["特别五星橙卡", "稀有五星橙卡", "普通五星橙卡"]
+        labels = ["Special 5★", "Rare 5★", "Normal 5★"]
         values = [orange_history.count("特别"), orange_history.count("稀有"), orange_history.count("普通")]
         fig, ax = plt.subplots()
         ax.pie(values, labels=labels, autopct="%1.1f%%", startangle=90)
