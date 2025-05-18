@@ -79,7 +79,7 @@ def simulate(draws):
     return results, orange_history, orange_name_types
 
 # === 页面 UI ===
-st.title("🎲 三国志·战略版 抽卡计算器")
+st.title("🎲 三战 抽卡计算器 - 上官出品")
 st.markdown("🧮 抽卡成本计算：5 连消耗 948 金珠，1 元 = 10 金珠，每抽约为 **18.96 元**")
 st.markdown("🔆 每赛季抽免半，需要 17820 金珠，可抽 360 次；")
 st.markdown("🔆 每赛季双月卡，消费 144 元得 20340 金珠，可抽 107.27 次（21.45 次 5 连）；")
